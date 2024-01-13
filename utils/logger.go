@@ -13,11 +13,14 @@ func CreateLogFile(name string) *os.File {
 	return f
 }
 
-func Logger(txt string) {
+var fn *os.File = CreateLogFile("log")
+
+func Logger(fname *os.File, txt string) {
 
 	killog := log.Default()
+	killog.SetOutput(fn)
 	killog.SetFlags(log.LstdFlags | log.Lshortfile)
-	killog.Println("with file/line")
+	killog.Println(txt)
 
 	// jsonHandler := slog.NewJSONHandler(os.Stderr, nil)
 	// myslog := slog.New(jsonHandler)
