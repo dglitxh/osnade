@@ -3,6 +3,8 @@ package utils
 import (
 	"log"
 	"os"
+
+	"log/slog"
 )
 
 func CreateLogFile(name string) *os.File {
@@ -15,16 +17,16 @@ func CreateLogFile(name string) *os.File {
 
 var fn *os.File = CreateLogFile("log")
 
-func Logger(fname *os.File, txt string) {
+func Logger(txt string) {
 
-	killog := log.Default()
+	killog := log.New(fn, "", 1)
 	killog.SetOutput(fn)
 	killog.SetFlags(log.LstdFlags | log.Lshortfile)
 	killog.Println(txt)
+	log.Println(txt)
 
-	// jsonHandler := slog.NewJSONHandler(os.Stderr, nil)
-	// myslog := slog.New(jsonHandler)
-	// myslog.Info("hi there")
+	jsonHandler := slog.NewJSONHandler(os.Stderr, nil)
+	myslog := slog.New(jsonHandler)
+	myslog.Info("hi there")
 
-	// myslog.Info("hello again", "key", "val", "age", 25)
 }
